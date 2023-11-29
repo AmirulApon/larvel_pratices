@@ -1,0 +1,35 @@
+version: '3'
+services:
+  backend:
+    container_name: bakend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+      DB_DATABASE: admin
+      DB_USERNAME: root
+      DB_PASSWORD: 12345678
+    ports:
+      - "8080:8000"
+    volumes:
+      - .:/app 
+    depends_on:
+      - db
+    networks:
+      - app
+  db:
+    container_name: database
+    image: mysql
+    environment:
+      MYSQL_DATABASE: admin
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+      MYSQL_ROOT_PASSWORD: 12345678
+    volumes:
+      - .dbdata:/var/lib/mysql
+    ports:
+      - 33066:3306
+
+networks:
+  app:
